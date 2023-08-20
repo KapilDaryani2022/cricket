@@ -1,0 +1,73 @@
+.bat {
+    cursor: pointer;
+    min-width: 60px;
+    height: 60px;
+    text-align: center;
+    border-radius: 50%;
+    border: 2px solid #185c5e;
+    font-size: 16px;
+    background: cadetblue;
+    color: white;
+    margin: 10px 10px;
+    width: fit-content;
+}
+.pitch {
+    display: flex;
+    justify-content: center;
+    width: 520px;
+    max-width: 100%;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+.bat.select {
+    background-color: rgb(177, 116, 2);
+}
+.see {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 17px;
+}
+.Stadium {
+    margin-top: 10px;
+    position: relative;
+}
+*{
+    font-size: 18px;
+}
+.out {
+    color: red;
+    font-size: 40px;
+}
+.win {
+    font-size: 60px;
+    color: green;
+    font-weight: 600;
+}
+.win + div {
+    display: none;
+}
+.out + p {
+    display: none;
+}
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    background: transparent;
+    padding-top: 40px;
+    font-size: 60px;
+    font-weight: 700;
+    color: #720000;
+}
+
+.gelatine {
+    animation: gelatine 01s infinite;
+  }
+  @keyframes gelatine {
+    from, to { transform: scale(1, 1); }
+    25% { transform: scale(0.9, 0.9); }
+    50% { transform: scale(1, 1); }
+    75% { transform: scale(0.9, 0.9); }
+  }
