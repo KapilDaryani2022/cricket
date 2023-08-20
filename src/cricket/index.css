@@ -11,6 +11,9 @@
     margin: 10px 10px;
     width: fit-content;
 }
+.last-bowl {
+    animation: new 01s infinite;
+}
 .pitch {
     display: flex;
     justify-content: center;
@@ -64,10 +67,14 @@
 
 .gelatine {
     animation: gelatine 01s infinite;
-  }
+}
   @keyframes gelatine {
     from, to { transform: scale(1, 1); }
     25% { transform: scale(0.9, 0.9); }
     50% { transform: scale(1, 1); }
     75% { transform: scale(0.9, 0.9); }
+  }
+  @keyframes new {
+    from {opacity: 0;}
+    to {opacity: 1;}
   }

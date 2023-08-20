@@ -11,12 +11,16 @@ function Cricket() {
   const [count, setCount] = useState(3);
   const [play, setPlay] = useState(1);
   const [target, setTarget] = useState(0);
+  const [miss, setMiss] = useState([]);
+  const [animate, setAnimate] = useState(false);
+  const [shots, setShots] = useState([]);
   const handlePlay = (num) => {
     setPlay(num);
   }
   function getRandomNumber() {
     return Math.floor(Math.random() * 12) + 1;
   }
+  // BOWLING
   const yourNumber = (event) => {
     event.preventDefault();
     setBatting(parseInt(event.target.value));
@@ -24,71 +28,73 @@ function Cricket() {
       const bowl1 = getRandomNumber();
       setBowling([bowl1]);
     }
-    else if (play === 2) {
-      const dummyBowl = [];
-      let bowl1, bowl2;
-      bowl1 = getRandomNumber();
-      dummyBowl.push(bowl1);
-      do {
-        bowl2 = getRandomNumber();
-      } while (bowl2 === bowl1);
-      dummyBowl.push(bowl2);
-      setBowling(dummyBowl);
-    }
-    else if (play === 3) {
-      const dummyBowl = [];
-      let bowl1, bowl2, bowl3;
-      bowl1 = getRandomNumber();
-      dummyBowl.push(bowl1);
-      do {
-        bowl2 = getRandomNumber();
-      } while (bowl2 === bowl1);
-      dummyBowl.push(bowl2);
-      do {
-        bowl3 = getRandomNumber();
-      } while (bowl3 === bowl1 || bowl3 === bowl2);
-      dummyBowl.push(bowl3);
-      setBowling(dummyBowl);
-    }
     else {
       const dummyBowl = [];
-      let bowl1, bowl2, bowl3, bowl4;
-      bowl1 = getRandomNumber();
-      dummyBowl.push(bowl1);
-      do {
-        bowl2 = getRandomNumber();
-      } while (bowl2 === bowl1);
-      dummyBowl.push(bowl2);
-      do {
-        bowl3 = getRandomNumber();
-      } while (bowl3 === bowl1 || bowl3 === bowl2);
-      dummyBowl.push(bowl3);
-      do {
-        bowl4 = getRandomNumber();
-      } while (bowl4 === bowl1 || bowl4 === bowl2 || bowl4 === bowl3);
-      dummyBowl.push(bowl4);
+      while (dummyBowl.length < play) {
+        const bowlP = getRandomNumber();
+        if (!dummyBowl.includes(bowlP)) {
+          dummyBowl.push(bowlP);
+        }
+      }
       setBowling(dummyBowl);
     }
   }
-  console.log(bowling)
+ 
+  // MISS
+  useEffect(() => {
+    if (play === 3) {
+      const dummyBowl = [];
+      while (dummyBowl.length < 1) {
+        const bowlP = getRandomNumber();
+        if (!dummyBowl.includes(bowlP) && !bowling.includes(bowlP)) {
+          dummyBowl.push(bowlP);
+        }
+      }
+      setMiss(dummyBowl)
+    } 
+    else if (play === 4) {
+      const dummyBowl = [];
+      while (dummyBowl.length < 2) {
+        const bowlP = getRandomNumber();
+        if (!dummyBowl.includes(bowlP) && !bowling.includes(bowlP)) {
+          dummyBowl.push(bowlP);
+        }
+      }
+      setMiss(dummyBowl)
+    }
+  }, [bowling]);
+  // BATTING
   useEffect(() => {
     if (bowling.length !== 0) {
       setCount(3);
+      setAnimate(true)
+      setTimeout(() => {
+        setAnimate(false)
+      }, 1000);
       if (bowling.includes(batting)) {
         setwicket(wicket + 1);
+        shots.push('W')
+      }
+      else if (miss.includes(batting)) {
+        setTotalScore(totalScore);
+        shots.push(0)
       }
       else {
         if (play === 1) {
           setTotalScore(totalScore + 1);
+          shots.push(1);
         }
         else if (play === 2) {
           setTotalScore(totalScore + 2);
+          shots.push(2);
         }
         else if (play === 3) {
           setTotalScore(totalScore + 4);
+          shots.push(4);
         }
         else {
           setTotalScore(totalScore + 6);
+          shots.push(6);
         }
       }
       setbowl(bowl + 1);
@@ -99,12 +105,12 @@ function Cricket() {
       setCount((count) => count - 1);
     }, 1000);
   }, [bowl]);
-
+  console.log(shots);
   function Overlay() {
     return <div className="overlay gelatine">Next Turn</div>;
   }
   const genrateTarget = () => {
-    setTarget(Math.floor(Math.random() * (100 - 40 + 1)) + 40);
+    setTarget(Math.floor(Math.random() * (90 - 40 + 1)) + 40);
   }
   return (
     <div className="Stadium">
@@ -130,8 +136,8 @@ function Cricket() {
         {target !== 0 && target - totalScore <= 0 ? <div className="win">WIN!!</div> : ''}
         <div>
           {bowling.includes(batting) && bowl !== 0 ?<p className="out"> OUT !!</p> : ''}
-          {play && bowling.length !== 0 && <p style={{ color: 'green', fontSize: '48px', fontWeight: 600, marginTop: '10px' }}>
-            {play === 1 ? '1' : play === 2 ? '2' : play === 3 ? '4' : '6'}
+          {play && bowling.length !== 0 && <p className={animate ? 'last-bowl' : ''} style={{ color: 'green', fontSize: '48px', fontWeight: 600, marginTop: '10px' }}>
+            {shots[shots.length - 1] === 0 ? 'MISS!' : shots[shots.length - 1]}
           </p>}
           <p style={{ color: 'blue', fontSize: '22px' }}>this is your total score {totalScore}/{wicket}</p>
           <p className="see">opposite bowling: <span>
