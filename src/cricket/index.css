@@ -64,7 +64,29 @@
     font-weight: 700;
     color: #720000;
 }
-
+.shotmap {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+.shotmap > * {
+    width: 20px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #aaa;
+    border-radius: 50%;
+    font-size: 12px;
+    background-color: black;
+    color: white;
+    display: none;
+    max-width: 100%;
+    flex-wrap: wrap;
+}
+.shotmap > *:nth-last-child(-n+6) {
+    display: flex;
+}
 .gelatine {
     animation: gelatine 01s infinite;
 }
